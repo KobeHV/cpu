@@ -22,27 +22,17 @@
 
 module memory_test();
 
-parameter rst_repiod = 100;
-reg rst;
 reg clk;
 
 initial
 begin
-    clk = 0;
-    rst = 0;
-    #rst_repiod;
-    rst = 1;   
+    clk = 0; 
 end
 
 always
 begin
     #10 clk<=~clk;
 end
-wire [3:0]t;
-clk clk_test(rst,clk,t);
-
-wire [3:0]start;
-assign start = t;
 
 reg [5:0]op;
 reg [31:0]alu_i;
@@ -57,6 +47,6 @@ end
 
 wire [31:0]write_o;
 
-memory memory_test(start,op,alu_i,addr_i,write_o);
+memory memory_test(clk,op,alu_i,addr_i,write_o);
 
 endmodule

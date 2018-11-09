@@ -23,6 +23,7 @@
 module fetch_test();
 parameter rst_repiod = 100; 
 parameter pc_update_delay = 200; 
+
 reg rst;
 reg clk;
 
@@ -38,11 +39,7 @@ always
 begin
     #10 clk<=~clk;
 end
-wire [3:0]t;
-clk clk_test(rst,clk,t);
 
-wire [3:0]start;
-assign start = t;
 
 reg pc_update;
 reg [31:0]pc_i;
@@ -57,6 +54,6 @@ end
 
 wire [31:0]ir_o;
 wire [31:0]npc;
-fetch fetch_test(start,ir_o,npc,pc_update,pc_i);
+fetch fetch_test(rst,clk,ir_o,npc,pc_update,pc_i);
 
 endmodule

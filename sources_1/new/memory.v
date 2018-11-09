@@ -20,12 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module memory(start,op,alu_i,addr_i,write_o);
-input [3:0]start;
+module memory(clk,op,alu_i,addr_i,write_o);
+input clk;
 input [5:0]op;
 input [31:0]alu_i;
 input [31:0]addr_i;
-output reg [31:0]write_o;
+output [31:0]write_o;
 
 reg [31:0]DatMem [255:0];
 
@@ -35,20 +35,15 @@ begin
     $readmemh("C:/1-Studies/Principles of Computer Composition/experiment/project/cpu/data.txt", DatMem);
 end
 	
-always@(posedge start[2])
+assign write_o = op[5:4]==2'b00 ? alu_i:				 
+				 op[5:4]==2'b10 ? addr_i:
+				 op==6'b010001 ? DatMem[addr_i]://LW
+				 0;
+
+always @(negedge clk)
 begin
-	case(op)
-		6'b000000,
-		6'b000001,
-        6'b000010,
-        6'b000011,
-        6'b000100,
-	    6'b000101:write_o <= alu_i;
-		6'b010000:DatMem[addr_i] <= alu_i;//SW
-		6'b010001:write_o <= DatMem[addr_i];//LW
-		6'b100000,
-		6'b100001:write_o <= addr_i;
-	endcase
+	if(op==6'b010000)
+		DatMem[addr_i] = alu_i;//SW	
 end
 
 endmodule

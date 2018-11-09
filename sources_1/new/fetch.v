@@ -20,8 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module fetch(start,ir_o,npc,pc_update,pc_i);
-input [3:0]start;
+module fetch(rst,clk,ir_o,npc,pc_update,pc_i);
+input rst;
+input clk;
 input pc_update;
 input [31:0]pc_i;
 output reg [31:0]ir_o;
@@ -38,7 +39,8 @@ begin
 	$readmemh("C:/1-Studies/Principles of Computer Composition/experiment/project/cpu/int.txt",IntMem);
 end
 
-always@(posedge start[3])
+//update PC
+always@(negedge clk)
 begin 	
 	if(pc_update)
 		begin
@@ -50,8 +52,11 @@ begin
 		end
 end
 
-always @(posedge start[0])
+always @(posedge clk)
 begin 	
+	if(!rst) 
+        PC = 0;
+
 	ir_o = IntMem[PC];
 	npc = PC + 1;
 end

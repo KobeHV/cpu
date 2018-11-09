@@ -25,33 +25,36 @@ module CPU(rst,clk);
 input rst;
 input clk;
 
-//clk module
-wire [3:0]t;
-clk Clock(rst,clk,t);
-
 //fetch module
 wire pc_update;
 wire [31:0]pc_new;
 
 wire [31:0]ir_o;
 wire [31:0]npc;
-fetch Fetch(t,ir_o,npc,pc_update,pc_new);
+fetch Fetch(rst,clk,ir_o,npc,pc_update,pc_new);
 
-//alu module
+//decode module
 wire reg_update;
 wire[31:0]reg_new;
 
+wire [5:0]op;
+wire [31:0]A;
+wire [31:0]B;
+wire [31:0]Imm;
+decode Decode(clk,ir_o,op,A,B,Imm,reg_update,reg_new);
+
+//alu module
 wire ife;
 wire [5:0]op;
 wire [31:0]alu_o;
 wire [31:0]addr_o;
-alu Alu(t,ir_o,npc,ife,op,alu_o,addr_o,reg_update,reg_new);
+alu Alu(op,npc,A,B,Imm,ife,alu_o,addr_o);
 
 //memory module
 wire [31:0]write_o;
-memory Memory(t,op,alu_o,addr_o,write_o);
+memory Memory(clk,op,alu_o,addr_o,write_o);
 
 //write module
-write Write(t,ife,op,write_o,reg_update,reg_new,pc_update,pc_new);
+write Write(ife,op,write_o,reg_update,reg_new,pc_update,pc_new);
 
 endmodule

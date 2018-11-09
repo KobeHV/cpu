@@ -22,27 +22,17 @@
 
 module write_test();
 
-parameter rst_repiod = 100;
-reg rst;
 reg clk;
 
 initial
 begin
-    clk = 0;
-    rst = 0;
-    #rst_repiod;
-    rst = 1;   
+    clk = 0; 
 end
 
 always
 begin
     #10 clk<=~clk;
 end
-wire [3:0]t;
-clk clk_test(rst,clk,t);
-
-wire [3:0]start;
-assign start = t;	
 	
 reg ife;
 reg [5:0]op;
@@ -60,6 +50,6 @@ wire [31:0]reg_new;
 wire pc_update;
 wire [31:0]pc_new;
 
-write write_test(start,ife,op,write_i,reg_update,reg_new,pc_update,pc_new);
+write write_test(ife,op,write_i,reg_update,reg_new,pc_update,pc_new);
 
 endmodule

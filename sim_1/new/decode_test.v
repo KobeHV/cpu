@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 2018/11/08 09:55:44
+// Create Date: 2018/11/09 17:33:26
 // Design Name: 
-// Module Name: clk_test
+// Module Name: decode_test
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,23 +20,38 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module clk_test();
-parameter rst_repiod = 100; 
-reg rst;
+module decode_test();
+parameter reg_update_delay = 200; 
 reg clk;
 
 initial
 begin
-    clk = 0;
-    rst = 0;
-    #rst_repiod;
-    rst = 1;   
+    clk = 0; 
 end
 
 always
 begin
     #10 clk<=~clk;
 end
-wire [3:0]t;
-clk clk_test(rst,clk,t);
+
+reg [31:0]ir_i;
+reg reg_update;
+reg [31:0]reg_i;
+
+initial
+begin
+	ir_i = 32'b0000_0800;
+	reg_update=0;
+	#reg_update_delay;
+	reg_update=1;
+	reg_i=32'h00000004;
+end
+
+wire [5:0]op;
+wire [31:0]A;
+wire [31:0]B;
+wire [31:0]Imm;
+
+decode Decode(clk,ir_i,op,A,B,Imm,reg_update,reg_i);
+
 endmodule
