@@ -33,26 +33,27 @@ reg [31:0]PC;
 
 initial
 begin
-    PC = 0;
-	$readmemh("int.dat",IntMem);
+    PC = 0 ;
+	//$readmemh("int.dat",IntMem);
+	$readmemh("C:/1-Studies/Principles of Computer Composition/experiment/project/cpu/int.txt",IntMem);
 end
 
-always@(negedge start[3])
+always@(posedge start[3])
 begin 	
 	if(pc_update)
 		begin
-		  PC <= pc_i;
+		  PC = pc_i;
 		end
 	else 
 		begin
-			PC <= PC + 4;
+		  PC = PC + 1;
 		end
 end
 
 always @(posedge start[0])
 begin 	
-	ir_o <= IntMem[PC];
-	npc <= PC + 4;
+	ir_o = IntMem[PC];
+	npc = PC + 1;
 end
 
 endmodule

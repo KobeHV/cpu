@@ -24,8 +24,8 @@ module alu(start,ir_i,pc_i,ife,op,alu_o,addr_o,reg_update,reg_i);
 input [3:0]start;
 input [31:0]ir_i;
 input [31:0]pc_i;
-input reg_i;
-input [31:0]reg_update;
+input reg_update;
+input [31:0]reg_i;
 output reg ife;
 output [5:0]op;
 output reg [31:0]alu_o;
@@ -35,9 +35,10 @@ output reg [31:0]addr_o;
 reg [31:0]Regs [31:0];
 initial
 begin
-    Regs[0] = 0;
-    Regs[1] = 1;
-    Regs[2] = 2;
+    Regs[0] = 2;
+    Regs[1] = 3;
+    Regs[2] = 4;
+    Regs[3] = 5;
 end
 
 wire [4:0]Ri;
@@ -59,7 +60,7 @@ assign A =  op == 6'b100001 ? 0:
 assign B =  (op[5:4] == 2'b00) ? Regs[Rk] : Regs[Ri];
 assign Imm = op == 6'b100001 ? ir_i[25:0] : ir_i[15:0];
 
-always @(negedge start[3])
+always @(posedge start[3])
 begin 	
 	if(reg_update)
 		begin
@@ -78,14 +79,17 @@ begin
 		6'b000101:alu_o <= A < B ? 1:0;//STL
 		6'b010000:addr_o <= A + Imm;//SW
 		6'b010001:addr_o <= A + Imm;//LW
-		6'b100000:addr_o <= pc_i+ Imm<<2;//BEQ
-		6'b100001:addr_o <= pc_i+Imm<<2;//JMP
+		6'b100000:addr_o <= (Imm<<2) + pc_i;//BEQ //!!!!!!!!!!when << add ()!!!!!!!!!!
+		6'b100001:addr_o <= (Imm<<2) + pc_i;//JMP
 	endcase
 	if(op==6'b010000)//SW
-	begin
-	   ife <= A==0 ? 1:0;
+	begin	   
 	   alu_o <= B;
-	end
+	end	
+	if(op==6'b100000)//BEQ
+        begin
+           ife <= A==0 ? 1:0;
+        end
 end
 
 endmodule

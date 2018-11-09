@@ -31,7 +31,8 @@ reg [31:0]DatMem [255:0];
 
 initial
 begin
-    $readmemh("data.dat", DatMem);
+    //$readmemh("data.dat", DatMem);
+    $readmemh("C:/1-Studies/Principles of Computer Composition/experiment/project/cpu/data.txt", DatMem);
 end
 	
 always@(posedge start[2])
