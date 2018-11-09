@@ -25,6 +25,11 @@ input rst,clk;
 output reg [3:0]t;
 
 reg [3:0]temp;
+initial
+begin
+     t = 4'b0000;
+end
+
 always@(posedge clk)
 begin
 	if(!rst)

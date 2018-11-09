@@ -31,17 +31,16 @@ output reg pc_update;
 output reg [31:0]pc_new;
 
 reg [1:0]op_high;
-always @(start[3])
-begin 
-    op_high = op[5:4];     
-	if(op_high==2'b00 || op_high==2'b01)
+always @(posedge start[3])
+begin     
+	if(op[5:4]==2'b00 || op==6'b010001)
 		begin
 			reg_update <= 1;
 			reg_new <= write_i;
 			
 			pc_update <= 0;
 		end
-	else if((op_high==2'b10 && ife) || op_high==2'b11)
+	else if((op==6'b100000 && ife) || op==6'b10_0001)
 		begin
 			pc_update <= 1;
 			pc_new <= write_i;
