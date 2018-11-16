@@ -22,7 +22,7 @@
 
 module fetch_test();
 parameter rst_repiod = 100; 
-parameter pc_update_delay = 200; 
+parameter pc_update_delay = 150; 
 
 reg rst;
 reg clk;

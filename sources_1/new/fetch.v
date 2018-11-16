@@ -54,7 +54,7 @@ end
 
 always @(posedge clk)
 begin 	
-	if(!rst) 
+	if(rst) 
         PC = 0;
 
 	ir_o = IntMem[PC];

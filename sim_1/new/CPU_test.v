@@ -29,9 +29,9 @@ reg clk;
 initial
 begin
     clk = 0;
-    rst = 0;
+    rst = 1;
     #rst_repiod;
-    rst = 1;   
+    rst = 0;   
 end
 
 always

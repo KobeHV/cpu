@@ -31,6 +31,7 @@ output [31:0]A;
 output [31:0]B;
 output [31:0]Imm;
 
+
 // 32
 reg [31:0]Regs [31:0];
 initial
@@ -55,11 +56,12 @@ assign Rk = ir_i[15:11];
 assign op = ir_i[31:26];
 
 assign A =  op == 6'b100001 ? 0:   //JMP
-			op == 6'b100000 ? Regs[Ri] ^ Regs[Rj]:  //BEQ
+			op == 6'b100000 ? Regs[Ri] ^ Regs[Rj]:  //BEQ，结果为0则跳转
 			Regs[Rj];
 assign B =  (op[5:4] == 2'b00) ? Regs[Rk] : 
 			Regs[Ri];//SW
-assign Imm = op == 6'b100001 ? ir_i[25:0] : ir_i[15:0];
+assign Imm = op == 6'b100001 ? ir_i[25:0] : //JMP
+	   ir_i[15:0];//BEQ
 
 always @(negedge clk)
 begin
