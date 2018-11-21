@@ -45,7 +45,6 @@ decode Decode(clk,ir_o,op,A,B,Imm,reg_update,reg_new);
 
 //alu module
 wire ife;
-wire [5:0]op;
 wire [31:0]alu_o;
 wire [31:0]addr_o;
 alu Alu(op,npc,A,B,Imm,ife,alu_o,addr_o);

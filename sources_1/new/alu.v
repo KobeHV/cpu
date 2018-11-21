@@ -41,8 +41,8 @@ assign alu_o  =  op == 6'b000000 ? A + B:
 				 
 assign addr_o =  op == 6'b010000 ? A + Imm:    //SW      
 				 op == 6'b010001 ? A + Imm:    //LW
-				 op == 6'b100000 ? (Imm<<2) + npc: //BEQ !!!!!!!!!!when << add ()!!!!!!!!!!
-				 op == 6'b100001 ? (Imm<<2) + npc: //JMP
+				 op == 6'b100000 ? Imm: //BEQ !!!!!!!!!!when << add ()!!!!!!!!!!
+				 op == 6'b100001 ? Imm: //JMP
                  0;
 				 
 assign ife =  (op==6'b100000 && A==0) ? 1:0;//BEQ

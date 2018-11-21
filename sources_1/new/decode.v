@@ -40,6 +40,7 @@ begin
     Regs[1] = 3;
     Regs[2] = 4;
     Regs[3] = 5;
+	Regs[4] = 3;
 end
 
 wire [4:0]Ri;
